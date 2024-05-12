@@ -12,7 +12,7 @@ const router = Router({caseSensitive:true});
 router.use('/:id/subcategory',subcategoryRouter)
 router.post('/',auth(endPoints.create),fileUpload(filleType.image).single('image'),categoryControllar.create)
 
-router.get('/',auth(endPoints.get),categoryControllar.getAll)
+router.get('/',categoryControllar.getAll)
 
 
 router.get('/active',auth(endPoints.get),categoryControllar.getActive)
