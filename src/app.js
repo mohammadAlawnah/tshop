@@ -3,6 +3,7 @@ import productRouter from './modules/product/product.router.js'
 import authRouter from './modules/auth/auth.router.js'
 import userRouter from './modules/user/user.router.js'
 import subcategoryRouter from './modules/subcategory/subcategory.router.js'
+import cartRouter from './modules/cart/cart.router.js'
 import cors from 'cors'
 import connectDB from '../DB/connection.js'
 
@@ -16,6 +17,8 @@ export const initApp = (app,express)=>{
     app.use('/user',userRouter)
     app.use('/category',categoriesRouter)
     app.use('/subcategorie',subcategoryRouter)
+    app.use('/product',productRouter)
+    app.use('/cart',cartRouter)
 
 
     // app.use('/user',userRouter)

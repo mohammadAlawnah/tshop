@@ -60,6 +60,10 @@ export const sendCode = async(req,res)=>{
     if(!user){
         return res.status(404).json({message : "user not found"});
     }
+
+    if(!user.confirmEmail){
+        return res.status(400).json({message : "plz confairm your email"})
+    }
     
     // send email code .... 
 
@@ -75,7 +79,6 @@ export const forgotPassword = async(req,res)=>{
 
     if(!user){
         return res.status(404).json({message : "email not found"});
-
     }
 
     if(user.sendCode != code){
@@ -87,6 +90,5 @@ export const forgotPassword = async(req,res)=>{
     await user.save();
 
     return res.status(200)
-
 
 }

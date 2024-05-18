@@ -62,9 +62,6 @@ export const getAll = async (req, res) => {
 // }
 
 
-
-
-
 export const getActive = async (req, res) => {
     const categories = await categoryModel.find({ status: 'Active' }.select("name"));
     return res.status(200).json({ message: categories })
