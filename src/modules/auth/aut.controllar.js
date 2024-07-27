@@ -7,14 +7,12 @@ export const getAuth = (req,res)=>{
     return res.json({message : 'sucsses'})
 }
 
+
+
 export const register = async(req,res)=>{
+    console.log('registur function')
+ 
     const {userName,email,password} = req.body;
-
-    const user = await userModel.findOne({email})
-
-    if(user){
-        return res.status(409).json({message:"email alredy exisist"})
-    }
 
     const hashpassword = bcrypt.hashSync(password,parseInt(process.env.SALTROUND))
 
@@ -92,3 +90,9 @@ export const forgotPassword = async(req,res)=>{
     return res.status(200)
 
 }
+
+
+
+
+
+

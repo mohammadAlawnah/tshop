@@ -3,6 +3,7 @@ import CartModel from "../../../DB/model/cart.model.js";
 
 export const get =async(req,res)=>{
     const cart = await CartModel.findOne({userId:req.user._id});
+    
 
     return res.json({message : 'succses' , product : cart.products})
 }
@@ -82,8 +83,6 @@ export const updateQuantity = async(req,res)=>{
     
 
 }
-
-
 
 export const clearCart = async(req,res)=>{
     const cart  = await CartModel.findOneAndUpdate({

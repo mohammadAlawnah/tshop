@@ -3,10 +3,8 @@ import subcategoryModel from "../../../DB/model/subcategory.js";
 import slugify from "slugify";
 import cloudinary from "../../utls/cloudinary.js";
 import productModel from "../../../DB/model/product.model.js";
-//  8:12
-export const getProduct = (req,res)=>{
-    res.json({message : "sucsecc"})
-}
+import { pagination } from "../../../DB/model/pagination.js";
+
 export const create = async(req,res)=>{
 
     const {name,categoryId,subcategoryId,price,discount} = req.body;
@@ -63,3 +61,53 @@ export const create = async(req,res)=>{
 
     return res.status(201).json({message : 'success',product})
 }
+
+export const getProducts =async (req,res)=>{
+
+    const {skip,limit} = pagination(req.query.page,req.query.limit)
+    let queryObj = {... req.query};
+    const execQuery = ['page','limit','sort','search','fields'];
+
+    execQuery.map((ele)=>{
+        delete queryObj[ele];
+    })
+
+    queryObj = JSON.stringify(queryObj)
+    queryObj = queryObj.replace(/gt|gte|lt|lte|in|nin|eq/g,match=>`$${match}`)
+    queryObj = JSON.parse(queryObj)
+    const mongoswQuery =  productModel.find(queryObj).skip(skip).limit(limit)
+    // .populate({
+    //     path:'reviews',
+    //     populate:{
+    //     path : 'userId',
+    //     select : 'userName'
+    //     },
+    // });
+
+    if(req.query.search){
+
+        mongoswQuery.find({
+
+            $or:[
+                {name:{$regex:req.query.search}},
+                {description:{$regex:req.query.search}},   
+            ]
+        })
+    }
+    mongoswQuery.select(req.query.fields);
+    
+    let products = await mongoswQuery.sort(req.query.sort);
+
+    products = products.map(product=>{
+        return {
+            ...product.toObject(),
+            mainImage : product.mainImage.secure_url,
+            subImages : product.subImages.map(img => img.secure_url)
+
+        }
+    })
+    
+
+    return res.status(200).json({message : 'success',products})
+}
+

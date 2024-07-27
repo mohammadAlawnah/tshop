@@ -1,5 +1,5 @@
 import mongoose, { Schema, Types, model } from "mongoose";
-//8:38
+
 const productSchema = new Schema({
     name : {
         type : String,
@@ -70,8 +70,14 @@ const productSchema = new Schema({
 
 },{
     timestamps : true,
+    toJSON:{virtuals : true},
+    toObject:{virtuals:true}
 })
-
+productSchema.virtual('reviews',{
+    ref : 'review',
+    localField : '_id',
+    foreignField : 'productId'
+})
 
 const productModel = model('Product',productSchema)
 export default productModel;

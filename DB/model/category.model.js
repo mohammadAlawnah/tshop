@@ -18,7 +18,6 @@ const categorySchema = new Schema({
         type : String,
         default : 'Active',
         enum : ['Active','NotActive'],
-
     },
     createdBy :{
         type : Types.ObjectId,
