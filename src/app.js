@@ -16,6 +16,10 @@ export const initApp = (app,express)=>{
     app.use(cors());
     
     app.use(express.json());
+    app.use('/',(req,res)=>{
+        res.json({message : 'welcome to tshop project'})
+    })
+    
     app.use('/auth',authRouter)
     app.use('/user',userRouter)
     app.use('/category',categoriesRouter)
